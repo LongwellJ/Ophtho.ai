@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect
 
 import os
@@ -96,23 +95,38 @@ def upload_image():
             image = request.files["image"]
             in_memory_file = io.BytesIO()
             image.save(in_memory_file)
-            data = np.fromstring(in_memory_file.getvalue(), dtype=np.uint8)
+            data = np.frombuffer(in_memory_file.getvalue(), dtype=np.uint8)
             img = cv2.imdecode(data, 1)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
             img = cv2.resize(img, (255,585))
-            Tensor_d = torch.tensor(img)
-            new_tensor = torch.Tensor.numpy(Tensor_d)
-            new_tensor = new_tensor.reshape(1, 1,585,255)
+            Tensor_d = torch.tensor(img, dtype=torch.float64)
+            #new_tensor = torch.Tensor.np(Tensor_d)
+            new_tensor = Tensor_d.reshape(1, 1,585,255)
             Tensor_d = torch.tensor(new_tensor)
             Tensor_d=Tensor_d.float()
-            print(Tensor_d)
+            #print(Tensor_d)
             model = torch.load(PATH)
             model.eval()
             with torch.no_grad():
                 
                 newoutput = model(Tensor_d)
             print(newoutput)
+            print(type(newoutput))
+            
+            if print(newoutput[0][0] > newoutput[0][1]) ==  torch.tensor(False):
+
+                print("This is broken")
+
+            else:
+                print("This is not broken")
+
+            
+
+            print(newoutput[0][0]) 
+            print(newoutput[0][1])
+            
+
             
             if image.filename == "":
                 print ("Image must have a filename")
@@ -133,11 +147,15 @@ def upload_image():
             
             
             
-            return redirect(request.url)
+            return redirect("http://127.0.0.1:5000/results")
 
     return render_template("index.html")
 
+@app.route("/results", methods=["GET", "POST"])
+def display_results():
 
+
+    return render_template("results.html")
 
 if __name__ == "__main__":
 
