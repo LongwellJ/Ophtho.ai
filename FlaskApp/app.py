@@ -1,29 +1,24 @@
-from flask import Flask, render_template, request, redirect
-
+#Packages
+from flask import Flask, render_template, request, redirect, Response
 import os
-
 from werkzeug.utils import secure_filename
-
-from skimage.transform import resize
-from skimage.color import rgb2gray
-import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import imageio
-import cv2
-import io
-
+from PIL import Image
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import torch.nn.functional as F
+from torchvision import datasets, transforms
 
-
+#Global app parameters
 app = Flask(__name__)
 
 app.config["IMAGE_UPLOADS"] = "C:/Users/longw/FlaskApp/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PNG", "JPG", "JPEG"]
+app.config["results"] = "No Image Submitted"
 
+#What images get allowed
 def allowed_image(filename):
 
     if not "." in filename:
@@ -38,125 +33,72 @@ def allowed_image(filename):
         return False
       
     
-    
-#defining my actual neural net
-class NN(nn.Module):   
-    def __init__(self):
-        super(NN, self).__init__()
 
-        self.conv1 = nn.Conv2d(1, 5, 10)
-        self.pool1 = nn.MaxPool2d(3,5)
-        self.conv2 = nn.Conv2d(5, 5, 3)
-        self.pool2 = nn.MaxPool2d(2,2)
-        self.fc1 = nn.Linear(6440, 500)
-        self.fc2 = nn.Linear(500, 2)
-        
-        
-        
-    def forward(self, x):
-        first = self.conv1(x)
-        
-        second = F.relu(first)
+#Loading the model path
+PATH = "C:/Users/longw/FlaskApp/better_model.pt"
 
-        third = self.pool1(second)
-
-        fourth = self.conv2(third)
-
-        fifth = F.relu(fourth)
-
-        sixth = self.pool2(fifth)
-
-        sixth = sixth.flatten(1)
-
-        seventh = self.fc1(sixth)
-        
-        eighth = F.relu(seventh)
-        
-        nineth = self.fc2(eighth)
-        
-        
-        return nineth
-
-
-#Loading the model
-PATH = "C:/Users/longw/FlaskApp/entire_model_newer.pt"
-
-
+#Backend function
 @app.route("/", methods=["GET", "POST"])
 def upload_image():
-
+    #check if something has been uploaded
     if request.files:
 
-        if True:
-            
+        #get the image from the page
+        image = request.files["image"]
 
-                
+        #reload if there is no filename         
+        if image.filename == "":
+            print ("Image must have a filename")
+            return redirect(request.url)
 
-            image = request.files["image"]
-            in_memory_file = io.BytesIO()
-            image.save(in_memory_file)
-            data = np.frombuffer(in_memory_file.getvalue(), dtype=np.uint8)
-            img = cv2.imdecode(data, 1)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-            img = cv2.resize(img, (255,585))
-            Tensor_d = torch.tensor(img, dtype=torch.float64)
-            #new_tensor = torch.Tensor.np(Tensor_d)
-            new_tensor = Tensor_d.reshape(1, 1,585,255)
-            Tensor_d = torch.tensor(new_tensor)
-            Tensor_d=Tensor_d.float()
-            #print(Tensor_d)
+        #reload if the image is not accepted   
+        if not allowed_image(image.filename):
+            print("Image extension invalid")
+            return redirect(request.url)
+
+        #save the image if it is good
+        else:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+            print("Image Saved")
+
+
+            #prep the image
+            img = Image.open(image).convert('RGB')
+            trans1 = transforms.Resize(256)
+            resized = trans1(img)
+            trans2 = transforms.CenterCrop(224)
+            cropped = trans2(resized)
+            trans3 = transforms.ToTensor()
+            cropped_tensor = trans3(cropped)
+            cropped_tensor = cropped_tensor[None, :]
+
+            #evaluate the image using the model
             model = torch.load(PATH)
             model.eval()
             with torch.no_grad():
                 
-                newoutput = model(Tensor_d)
-            print(newoutput)
-            print(type(newoutput))
-            
-            if print(newoutput[0][0] > newoutput[0][1]) ==  torch.tensor(False):
+                newoutput = model(cropped_tensor)
+                output = F.log_softmax(model(cropped_tensor), dim=1)
+                _, pred = torch.max(output, dim=1)
 
-                print("This is broken")
-
+            #analysis of the response of the model
+            if pred[0] == 0:
+                app.config["results"] = "This is CNV"
             else:
-                print("This is not broken")
+                if pred[0] == 1:
+                    app.config["results"] = "This is DME"
+                else:
+                    if pred[0] == 2:
+                        app.config["results"] = "This is Drusen"
+                    else:
+                        if pred[0] == 3:
+                            app.config["results"] = "This is Normal"
+        
+    #return the answer to the html page
+    return render_template("index.html", x = app.config["results"])
 
-            
-
-            print(newoutput[0][0]) 
-            print(newoutput[0][1])
-            
-
-            
-            if image.filename == "":
-                print ("Image must have a filename")
-                return redirect(request.url)
-            
-            if not allowed_image(image.filename):
-                print("Image extension invalid")
-                return redirect(request.url)
-
-            else:
-                filename = secure_filename(image.filename)
-
-
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                
-            
-            print("Image Saved")
-            
-            
-            
-            return redirect("http://127.0.0.1:5000/results")
-
-    return render_template("index.html")
-
-@app.route("/results", methods=["GET", "POST"])
-def display_results():
-
-
-    return render_template("results.html")
-
+#debugger
 if __name__ == "__main__":
 
     app.run(debug=True)
