@@ -9,12 +9,13 @@
 <body>
     
 <h1 style = "color: red;">AI Model Deployment</h1>
-<p>This webapp will take in an image and return a diagnosis and diagnostics. Accepts PNG and JPEG file format.</p>
+<p>This webapp will take in an image and return a diagnosis and diagnostics.</p>
     
 <div class="container">
     <div class="row">
         <div class="col">
             <h1>Upload Image</h1>
+            <p> Accepts PNG, JPG and JPEG file format.</p>
             <hr>
 
             <form action="/" method="POST" enctype="multipart/form-data">
@@ -35,7 +36,21 @@
     </div>
 </div>
     <h3>These are the results from the model:</h3>
+    <p>Model Diagnosis:</p>
+
+
     {{ x }}
+
+
+    <p>Model Diagnostics:</p>
+    
+    {{ z }}% probability of CNV<br>
+
+    {{ y }}% probability of DME<br>
+
+    {{ w }}% probability of Drusen<br>
+
+    {{ v }}% probability that it is normal
 </body>
 </html>
 
