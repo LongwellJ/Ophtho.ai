@@ -1,4 +1,5 @@
 #Packages
+from tkinter import Y
 from flask import Flask, render_template, request, redirect, Response
 import os
 from werkzeug.utils import secure_filename
@@ -16,8 +17,11 @@ app = Flask(__name__)
 
 app.config["IMAGE_UPLOADS"] = "C:/Users/longw/FlaskApp/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PNG", "JPG", "JPEG"]
-app.config["results"] = "No Image Submitted"
-
+app.config["Diagnosis"] = "No Image Submitted"
+app.config["cnv_prob"] = "0"
+app.config["dme_prob"] = "0"
+app.config["drusen_prob"] = "0"
+app.config["normal_prob"] = "0"
 #What images get allowed
 def allowed_image(filename):
 
@@ -79,24 +83,31 @@ def upload_image():
             with torch.no_grad():
                 
                 newoutput = model(cropped_tensor)
-                output = F.log_softmax(model(cropped_tensor), dim=1)
+                print(newoutput)
+                output = F.softmax(model(cropped_tensor), dim=1)
+                print(output[0][0])
+                app.config["cnv_prob"] = np.round(((output[0][0].numpy()) *100),2)
+                app.config["dme_prob"] = np.round(((output[0][1].numpy()) *100),2)
+                app.config["drusen_prob"] = np.round(((output[0][2].numpy()) *100),2)
+                app.config["normal_prob"] = np.round(((output[0][3].numpy()) *100),2)
                 _, pred = torch.max(output, dim=1)
-
+                print(type(app.config["cnv_prob"]))
+                print(pred)
             #analysis of the response of the model
             if pred[0] == 0:
-                app.config["results"] = "This is CNV"
+                app.config["Diagnosis"] = "This is CNV"
             else:
                 if pred[0] == 1:
-                    app.config["results"] = "This is DME"
+                    app.config["Diagnosis"] = "This is DME"
                 else:
                     if pred[0] == 2:
-                        app.config["results"] = "This is Drusen"
+                        app.config["Diagnosis"] = "This is Drusen"
                     else:
                         if pred[0] == 3:
-                            app.config["results"] = "This is Normal"
+                            app.config["Diagnosis"] = "This is Normal"
         
     #return the answer to the html page
-    return render_template("index.html", x = app.config["results"])
+    return render_template("index.html", x = app.config["Diagnosis"], z = app.config["cnv_prob"], y = app.config["dme_prob"], w = app.config["drusen_prob"], v = app.config["normal_prob"] )
 
 #debugger
 if __name__ == "__main__":
