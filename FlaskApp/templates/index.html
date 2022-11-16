@@ -1,58 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+      <link rel="shortcut icon" type="image/png" href="/calc/favicon.png"/>
+            <!-- Required meta tags -->
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <!-- Bootstrap CSS -->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/album/album.css">
+            <title>OphthoAI</title>
 </head>
+
+
 <body>
-    
-<h1 style = "color: red;">AI Model Deployment</h1>
-<p>This webapp will take in an image and return a diagnosis and diagnostics.</p>
-    
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Upload Image</h1>
-            <p> Accepts PNG, JPG and JPEG file format.</p>
-            <hr>
+  <header class="site-header">
+        <nav class="navbar navbar-expand-md fixed-top">
+          <div class="container">
 
-            <form action="/" method="POST" enctype="multipart/form-data">
+            <a class="navbar-brand mr-4" href="/">OphthoAI</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <div class="form-group">
-                    <label>Select image</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image" id="image">
-                        <label class="custom-file-label" for="image">Select image...</label>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary ">Upload Image</button>
-            </form>
+            <div class="collapse navbar-collapse" id="navbarToggle">
 
-            
+              <div class="navbar-nav mr-auto"></div>
+
+
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/">Home</a>
+                <a class="nav-item nav-link" href="/cite">Cite</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+  </header>
+
+
+  <div class = "container">
+    <main role="main" class="container">
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">AI Ophthalmology Project</h1>
+          <p class="lead text-muted">Upload your OCT B-Scans in JPG or PNG format</p>
+          <p class="lead text-muted">The model will return a diagnosis and diagnostics</p>
+
+          <form action="/results" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" id="image">
+            <button type="submit" name="S2L" class="btn btn-primary my-2">Upload file</button>
+          </form>
 
         </div>
+      </section>
+
+      <div class="row">
+        <div class="col-md-8"></div>
+      </div>
+
+    </main>
+    <div class="container fixed-bottom">
+      <p>&copy; 2022, Nishaant Bhambra and Jack Longwell.</p>
     </div>
-</div>
-    <h3>These are the results from the model:</h3>
-    <p>Model Diagnosis:</p>
-
-
-    {{ x }}
-
-
-    <p>Model Diagnostics:</p>
-    
-    {{ z }}% probability of CNV<br>
-
-    {{ y }}% probability of DME<br>
-
-    {{ w }}% probability of Drusen<br>
-
-    {{ v }}% probability that it is normal
+  </div>
 </body>
 </html>
-
-
-<script> 
