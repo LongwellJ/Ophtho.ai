@@ -11,19 +11,20 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import torch.nn.functional as F
 from torchvision import datasets, transforms
+import datetime
+import base64
+import io
 
 #Global app parameters
 app = Flask(__name__)
 
-#app.config["IMAGE_UPLOADS"] = "C:/Users/longw/FlaskApp/static/images"
+app.config["IMAGE_UPLOADS"] = "C:/Users/longw/FlaskApp/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PNG", "JPG", "JPEG"]
 app.config["Diagnosis"] = "No Image Submitted"
 app.config["cnv_prob"] = "0"
 app.config["dme_prob"] = "0"
 app.config["drusen_prob"] = "0"
 app.config["normal_prob"] = "0"
-
-
 #What images get allowed
 def allowed_image(filename):
 
@@ -44,9 +45,26 @@ def allowed_image(filename):
 PATH = "better_model.pt"
 
 #Backend function
+
+#index page code
 @app.route("/", methods=["GET", "POST"])
 def upload_image():
-    #check if something has been uploaded
+    
+    #return the answer to the html page
+    return render_template("index.html")
+
+#cite page code
+
+@app.route("/cite", methods=["GET", "POST"])
+def citations():
+
+    date = datetime.datetime.now()
+
+    return render_template("cite.html", date_chicago = date.strftime("%B %d, %Y"), date_mla = date.strftime("%d %B %Y"), date_apa = date.strftime("%Y,  %B %d"))
+
+@app.route("/results", methods=["GET", "POST"])
+def results():
+
     if request.files:
 
         #get the image from the page
@@ -64,12 +82,17 @@ def upload_image():
 
         #save the image if it is good
         else:
-            filename = secure_filename(image.filename)
+            #filename = secure_filename(image.filename)
             #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
-
+            #set a dummy database for the image
+            data = io.BytesIO()
             #prep the image
             img = Image.open(image).convert('RGB')
+            #save the image to the dummy database
+            img.save(data, "JPEG")
+            encoded_img_data = base64.b64encode(data.getvalue())
+            
             trans1 = transforms.Resize(256)
             resized = trans1(img)
             trans2 = transforms.CenterCrop(224)
@@ -104,9 +127,11 @@ def upload_image():
                     else:
                         if pred[0] == 3:
                             app.config["Diagnosis"] = "This is Normal"
-        
-    #return the answer to the html page
-    return render_template("index.html", x = app.config["Diagnosis"], z = app.config["cnv_prob"], y = app.config["dme_prob"], w = app.config["drusen_prob"], v = app.config["normal_prob"] )
+    
+    
+    return render_template("results.html", x = app.config["Diagnosis"], z = app.config["cnv_prob"], y = app.config["dme_prob"], w = app.config["drusen_prob"], v = app.config["normal_prob"], img_data=encoded_img_data.decode('utf-8'))
+
+
 
 #debugger
 if __name__ == "__main__":
