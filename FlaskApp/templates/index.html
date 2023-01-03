@@ -10,6 +10,52 @@
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
             <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/album/album.css">
             <title>OphthoAI</title>
+
+<style>
+
+div.gallery {
+  border: 1px #fff;
+}
+
+div.gallery img {
+  width: 100px;
+  height: 100px;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.responsive {
+  padding: 0 6px;
+  float: left;
+  width: 24.99999%;
+}
+
+@media only screen and (max-width: 700px) {
+  .responsive {
+    width: 49.99999%;
+    margin: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .responsive {
+    width: 100%;
+  }
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
 </head>
 
 
@@ -32,6 +78,7 @@
               <div class="navbar-nav">
                 <a class="nav-item nav-link" href="/">Home</a>
                 <a class="nav-item nav-link" href="/cite">Cite</a>
+                <a class="nav-item nav-link" href="/disclaimer">Disclaimer</a>
               </div>
             </div>
           </div>
@@ -43,17 +90,65 @@
     <main role="main" class="container">
       <section class="jumbotron text-center">
         <div class="container">
-          <h1 class="jumbotron-heading">AI Ophthalmology Project</h1>
-          <p class="lead text-muted">Upload your OCT B-Scans in JPG or PNG format</p>
-          <p class="lead text-muted">The model will return a diagnosis and diagnostics</p>
-
+          <h1 class="jumbotron-heading">Retinal Pathology Diagnostic Algorithm</h1>
+          <p class="lead text-muted">Upload your OCT B-Scans in JPG or PNG format to return a potential diagnosis of common retinal pathologies. The model gives a diagnosis and diagnostics, using a vision transformer model trained on real patient data.</p>
           <form action="/results" method="post" enctype="multipart/form-data">
             <input type="file" name="image" id="image">
             <button type="submit" name="S2L" class="btn btn-primary my-2">Upload file</button>
           </form>
 
+          <!-- images section start-->
+
+          <p class="text-center">Don't have any OCT scans? Click on one of the images below to run it through the algorithm!</p>
+
+
+
+
+          <div class="responsive">
+            <div class="gallery">
+              <a href="/cnv">
+                <img src="static\images\Flask-CNV.jpeg" alt="CNV" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+              </a>
+              <div class="desc">CNV</div>
+            </div>
+          </div>
+
+          <div class="responsive">
+            <div class="gallery">
+              <a href="/dme">
+                <img src= "static\images\Flask-DME.jpeg" alt="DME" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+              </a>
+              <div class="desc">DME</div>
+            </div>
+          </div>
+
+          <div class="responsive">
+            <div class="gallery">
+              <a href="/drusen">
+                <img src="static\images\Flask-DRUSEN.jpeg" alt="Drusen" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+              </a>
+              <div class="desc">Drusen</div>
+            </div>
+          </div>
+
+          <div class="responsive">
+            <div class="gallery">
+              <a href="/normal">
+                <img src="static\images\Flask-NORMAL.jpeg" alt="Normal" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+              </a>
+              <div class="desc">Normal</div>
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
+
+
         </div>
       </section>
+
+
+
+
 
       <div class="row">
         <div class="col-md-8"></div>
@@ -61,7 +156,7 @@
 
     </main>
     <div class="container fixed-bottom">
-      <p>&copy; 2022, Nishaant Bhambra and Jack Longwell.</p>
+      <p>&copy; 2023, Nishaant Bhambra and Jack Longwell.</p>
     </div>
   </div>
 </body>
