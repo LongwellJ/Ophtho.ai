@@ -15,6 +15,8 @@ import datetime
 import base64
 import io
 
+#Meaningless comment
+
 #Global app parameters
 app = Flask(__name__)
 
@@ -52,6 +54,49 @@ def upload_image():
     
     #return the answer to the html page
     return render_template("index.html")
+
+#disclaimer page code
+
+@app.route("/disclaimer", methods=["GET", "POST"])
+def disclaimer():
+    
+    
+    return render_template("disclaimer.html")
+
+#cnv page code
+
+@app.route("/cnv", methods=["GET", "POST"])
+def cnv():
+    
+    
+    return render_template("cnv.html")
+
+
+#dme page code
+
+@app.route("/dme", methods=["GET", "POST"])
+def dme():
+    
+    
+    return render_template("dme.html")
+
+
+#drusen page code
+
+@app.route("/drusen", methods=["GET", "POST"])
+def drusen():
+    
+    
+    return render_template("drusen.html")
+
+#normal page code
+
+@app.route("/normal", methods=["GET", "POST"])
+def normal():
+    
+    
+    return render_template("normal.html")    
+
 
 #cite page code
 
