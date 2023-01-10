@@ -23,7 +23,6 @@ import io
 
 #Global app parameters
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'BF1nolcWfP'
 app.config["IMAGE_UPLOADS"] = "C:/Users/longw/FlaskApp/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PNG", "JPG", "JPEG"]
 app.config["Diagnosis"] = "No Image Submitted"
