@@ -1,0 +1,144 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap');
+
+
+
+div.gallery {
+    border: 1px #fff;
+  }
+  
+  div.gallery img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  div.desc {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  .responsive {
+    padding: 0 6px;
+    float: left;
+    width: 24.99999%;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .responsive {
+      width: 49.99999%;
+      margin: 6px 0;
+    }
+  }
+  
+  @media only screen and (max-width: 500px) {
+    .responsive {
+      width: 100%;
+    }
+  }
+  
+  .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+section{
+    padding: 100px 0;
+}
+
+.pics{
+    font-family: 'Poppins', sans-serif;
+}
+.pics .title{
+
+    text-align: center;
+}
+
+
+.pics .carousel .card{
+
+    background: #222;
+    border-radius: 6px;
+    padding: 35px 35px;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+.pics .carousel .card:hover{
+
+    background: #0275d8
+
+}
+
+.pics .carousel .card .box{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.pics .carousel .card:hover .box{
+
+    transform: scale(1.20);
+}
+
+.pics .carousel .card .text{
+
+    font-size: 25px ;
+    font-weight: 500;
+    margin: 10px 0 7px 0;
+    color: #fff;
+
+}
+
+.pics .carousel .card img{
+
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border: 5px solid #0275d8;
+    transition: all 0.5s ease;
+}
+
+
+.pics .carousel .card:hover img{
+
+    border-color: #0275d8;
+
+}
+
+.owl-dots{
+
+    text-align: center;
+    margin-top: 20px;
+
+}
+
+.owl-dot{
+    height: 13px;
+    width: 13px;
+
+    margin: 0 5px;
+    outline: none!important;
+    border-radius: 50px;
+    border: 2px solid #0275d8!important;
+    transition: all 0.5s ease;
+}
+
+.owl-dot.active{
+
+    width:35px ;
+    border-radius: 14px;
+
+}
+
+.owl-dot.active, .owl-dot:hover{
+
+    background: #0275d8!important;
+}
