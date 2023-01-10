@@ -1,6 +1,10 @@
 #app/main.py
 #Packages
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, render_template, request, redirect, Response, url_for
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 import os
 from werkzeug.utils import secure_filename
 import numpy as np
@@ -19,7 +23,7 @@ import io
 
 #Global app parameters
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = 'BF1nolcWfP'
 app.config["IMAGE_UPLOADS"] = "C:/Users/longw/FlaskApp/static/images"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PNG", "JPG", "JPEG"]
 app.config["Diagnosis"] = "No Image Submitted"
@@ -27,6 +31,15 @@ app.config["cnv_prob"] = "0"
 app.config["dme_prob"] = "0"
 app.config["drusen_prob"] = "0"
 app.config["normal_prob"] = "0"
+
+
+Bootstrap(app)
+
+class NameForm(FlaskForm):
+    name = StringField('Which actor is your favorite?', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
 #What images get allowed
 def allowed_image(filename):
 
@@ -46,7 +59,7 @@ def allowed_image(filename):
 #Loading the model path
 PATH = "better_model.pt"
 
-#Backend function
+#Backend functions
 
 #index page code
 @app.route("/", methods=["GET", "POST"])
@@ -106,6 +119,7 @@ def citations():
     date = datetime.datetime.now()
 
     return render_template("cite.html", date_chicago = date.strftime("%B %d, %Y"), date_mla = date.strftime("%d %B %Y"), date_apa = date.strftime("%Y,  %B %d"))
+
 
 @app.route("/results", methods=["GET", "POST"])
 def results():
