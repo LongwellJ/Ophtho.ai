@@ -10,51 +10,15 @@
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
             <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/album/album.css">
             <title>OphthoAI</title>
+            
+            <link rel="stylesheet" href="static\css\style.css">
+            <script src="https://code.jquery.com/jquery-3.6.1.min.js" ></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" ></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
 
 <style>
 
-div.gallery {
-  border: 1px #fff;
-}
-
-div.gallery img {
-  width: 100px;
-  height: 100px;
-}
-
-div.desc {
-  padding: 15px;
-  text-align: center;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.responsive {
-  padding: 0 6px;
-  float: left;
-  width: 24.99999%;
-}
-
-@media only screen and (max-width: 700px) {
-  .responsive {
-    width: 49.99999%;
-    margin: 6px 0;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .responsive {
-    width: 100%;
-  }
-}
-
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 </style>
 </head>
 
@@ -92,6 +56,9 @@ div.desc {
         <div class="container">
           <h1 class="jumbotron-heading">Retinal Pathology Diagnostic Algorithm</h1>
           <p class="lead text-muted">Upload your OCT B-Scans in JPG or PNG format to return a potential diagnosis of common retinal pathologies. The model gives a diagnosis and diagnostics, using a vision transformer model trained on real patient data.</p>
+          
+          
+          
           <form action="/results" method="post" enctype="multipart/form-data">
             <input type="file" name="image" id="image">
             <button type="submit" name="S2L" class="btn btn-primary my-2">Upload file</button>
@@ -107,7 +74,7 @@ div.desc {
           <div class="responsive">
             <div class="gallery">
               <a href="/cnv">
-                <img src="static\images\Flask-CNV.jpeg" alt="CNV" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+                <img src="static\images\CNV1.jpeg" alt="CNV" width="200" height="200" style="border-radius: 8px;margin: 8px;">
               </a>
               <div class="desc">CNV</div>
             </div>
@@ -116,7 +83,7 @@ div.desc {
           <div class="responsive">
             <div class="gallery">
               <a href="/dme">
-                <img src= "static\images\Flask-DME.jpeg" alt="DME" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+                <img src= "static\images\DME1.jpeg" alt="DME" width="200" height="200" style="border-radius: 8px;margin: 8px;">
               </a>
               <div class="desc">DME</div>
             </div>
@@ -125,7 +92,7 @@ div.desc {
           <div class="responsive">
             <div class="gallery">
               <a href="/drusen">
-                <img src="static\images\Flask-DRUSEN.jpeg" alt="Drusen" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+                <img src="static\images\DRUSEN1.jpeg" alt="Drusen" width="200" height="200" style="border-radius: 8px;margin: 8px;">
               </a>
               <div class="desc">Drusen</div>
             </div>
@@ -134,7 +101,7 @@ div.desc {
           <div class="responsive">
             <div class="gallery">
               <a href="/normal">
-                <img src="static\images\Flask-NORMAL.jpeg" alt="Normal" width="200" height="200" style="border-radius: 8px;margin: 8px;">
+                <img src="static\images\NORMAL1.jpeg" alt="Normal" width="200" height="200" style="border-radius: 8px;margin: 8px;">
               </a>
               <div class="desc">Normal</div>
             </div>
@@ -146,6 +113,194 @@ div.desc {
         </div>
       </section>
 
+      <!-- java image scroller start-->
+
+      <section class="pics" id="pics">
+
+        <div class="max-width">
+          <h2 class="title">Test Your Skills</h2> 
+          <p style="text-align: center;">Guess the results of the model, then click the picture to check your answer!</p>
+          <div class="carousel owl-carousel">
+            <div class="card">
+
+              <div class="box">
+                <a href="/I">
+                  <img src="static\images\DME2.JPEG">
+                  <div class="text">I</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/II">
+                  <img src="static\images\CNV2.jpeg">
+                  <div class="text">II</div>
+                </a>
+              </div>
+            </div>
+
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/III">
+                  <img src="static\images\DRUSEN2.jpeg">
+                  <div class="text">III</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/IV">
+                  <img src="static\images\NORMAL2.jpeg">
+                  <div class="text">IV</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/V">
+                  <img src="static\images\NORMAL3.jpeg">
+                  <div class="text">V</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/VI">
+                  <img src="static\images\DME3.jpeg">
+                  <div class="text">VI</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/VII">
+                  <img src="static\images\CNV3.jpeg">
+                  <div class="text">VII</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/VIII">
+                  <img src="static\images\DRUSEN3.jpeg">
+                  <div class="text">VIII</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="IX">
+                  <img src="static\images\CNV4.jpeg">
+                  <div class="text">IX</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/X">
+                  <img src="static\images\CNV5.jpeg">
+                  <div class="text">X</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/XI">
+                  <img src="static\images\DRUSEN4.jpeg">
+                  <div class="text">XI</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/XII">
+                  <img src="static\images\DME4.jpeg">
+                  <div class="text">XII</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/XIII">
+                  <img src="static\images\NORMAL4.jpeg">
+                  <div class="text">XIII</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/XIV">
+                  <img src="static\images\NORMAL5.jpeg">
+                  <div class="text">XIV</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/XV">
+                  <img src="static\images\DRUSEN5.jpeg">
+                  <div class="text">XV</div>
+                </a>
+              </div>
+            </div>
+
+
+            <div class="card">
+
+              <div class="box">
+                <a href="/XVI">
+                  <img src="static\images\DME5.jpeg">
+                  <div class="text">XVI</div>
+                </a>
+              </div>
+            </div>
+
+
+          </div>
+        
+        </div>
+
+
+        <p class="bottom-50">
+          
+       </p>
+
+      </section>
 
 
 
@@ -159,5 +314,8 @@ div.desc {
       <p>&copy; 2023, Nishaant Bhambra and Jack Longwell.</p>
     </div>
   </div>
+
+
+  <script src="static\javascript\script.js"></script>
 </body>
 </html>
